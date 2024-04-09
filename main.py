@@ -10,8 +10,8 @@ def print_text(text, theme=''):
     print('________________________________________________________\n')
 
 
-file = 'reestr.xls'
-file_modified = 'reestr_modified.xlsx'
+file = 'abc.xls'
+file_modified = 'abcreestr_modified.xlsx'
 workbook = xlrd.open_workbook(file)
 sheet = workbook.sheet_by_index(0)
 wb = Workbook()
@@ -138,4 +138,4 @@ for group in unique_values:
 # Нижние диаграммы
 
 
-df.to_excel('reestrnew.xlsx', index=False)
+df.to_excel('abcnew.xlsx', index=False)
