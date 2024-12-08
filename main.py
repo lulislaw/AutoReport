@@ -8,7 +8,7 @@ locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 
 def fint(x):
-    return locale.format('%d', x, grouping=True)
+    return locale._format('%d', x, grouping=True)
 
 
 def print_text(text, theme=''):
@@ -18,10 +18,11 @@ def print_text(text, theme=''):
     print('________________________________________________________\n')
 
 
-replacer = TextReplacer("prez.pptx", slides='',
+replacer = TextReplacer("../../Downloads/Telegram Desktop/prez.pptx", slides='',
                         tables=True, charts=True, textframes=True)
-file = 'Реестр_транспортных_средств_23_04_2024.xls'
-datereestr = '.'.join(file.split('.')[0].split('_')[3:])
+file = 'Реестр_транспортных_средств_02_12_2024.xls'
+file_1 = file.replace(' ', '_').replace('.', '_').replace('_xls', '.xls')
+datereestr = '.'.join(file_1.split('.')[0].split('_')[3:])
 date_obj = datetime.strptime(datereestr, "%d.%m.%Y")
 old_date_str = date_obj.strftime("%d.%m.%Y")
 date_obj += timedelta(days=1)
@@ -201,11 +202,12 @@ for group in unique_values:
     result = result.sort_values(by='Неисправно', ascending=False)
     other = result.tail(len(result) - 3)
     top_3 = result.head(3)
+    top_3['Процент_неисправных'] = (top_3['Неисправно'] / top_3['Всего']) * 100
+    top_3 = top_3.sort_values(by='Процент_неисправных', ascending=False)
     sum_other = other.sum().to_frame().T
     sum_other['Тип'] = 'Иные'
     top_3 = pd.concat([top_3, sum_other], ignore_index=True)
     top_3['Процент_неисправных'] = (top_3['Неисправно'] / top_3['Всего']) * 100
-    top_3 = top_3.sort_values(by='Процент_неисправных', ascending=False)
     total_sum = result.sum().to_frame().T
     total_sum['Тип'] = 'Всего'
     total_sum['Процент_неисправных'] = (total_sum['Неисправно'] / total_sum['Всего']) * 100
